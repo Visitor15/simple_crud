@@ -21,7 +21,7 @@ public class HomeController {
         return response;
     }
 
-    @RequestMapping("/hello")
+    @RequestMapping(value = "/hello")
     public String helloWorld(@RequestParam(value="name", required = false, defaultValue = "Nick") String name, Model model) {
         String response = "hello";
 

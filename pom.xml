@@ -39,6 +39,20 @@
             <version>${spring.version}</version>
         </dependency>
 
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.7</version>
+        </dependency>
+
+        <!-- Aspects -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjtools</artifactId>
+            <version>1.8.5</version>
+        </dependency>
+
     </dependencies>
     <build>
     <finalName>Spring-SIMPLE-CRUD</finalName>
