@@ -9,9 +9,11 @@
 
     <context:component-scan base-package="controllers" />
 
-    <bean
+    <!-- Resource resolver -->
+    <bean id="internalResourceViewResolver"
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">
+            <!-- JSP files will search for here. -->
             <value>/WEB-INF/views/</value>
         </property>
         <property name="suffix">
