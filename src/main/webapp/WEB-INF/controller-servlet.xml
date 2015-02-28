@@ -2,15 +2,21 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
        xsi:schemaLocation="
     http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context-3.0.xsd
     http://www.springframework.org/schema/aop
-    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    http://www.springframework.org/schema/data/mongo
+    http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd"
+        >
 
     <context:component-scan base-package="controllers" />
+    <context:component-scan base-package="repositories" />
+    <context:component-scan base-package="dao" />
 
     <!-- Resource resolver -->
     <bean id="internalResourceViewResolver"
@@ -24,9 +30,29 @@
         </property>
     </bean>
 
+
+    <!-- MONGO -->
+    <mongo:mongo host="localhost" port="27017" id="mongoDB" />
+    <mongo:db-factory dbname="simple_crud" mongo-ref="mongoDB" id="mongoDBFactory" />
+
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoDBFactory" />
+    </bean>
+
+    <bean id="socialMessageDAO" class="dao.SocialMessageDAOImpl">
+        <constructor-arg name="mongoOperations" ref="mongoTemplate"/>
+    </bean>
+
+    <mongo:repositories base-package="repositories" />
+    <!-- END MONGO -->
+
     <!-- Logging bean -->
     <bean id="loggedController" class="controllers.LoggedControllerImpl"/>
+    <bean id="socialMessageController" class="social.messages.SocialMessageController">
+        <constructor-arg ref="socialMessageDAO"/>
+    </bean>
 
+    <!-- Configured aspect -->
     <aop:config>
         <aop:aspect ref="loggedController">
             <aop:before pointcut="execution(* controllers.LoggedHomeController.helloWorldLogged(..))" method="logCall" />
